@@ -1,0 +1,37 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+	id 'net.linguica.maven-settings' version '0.5'
+}
+
+group = 'com.contoso.samples'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '1.8'
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-actuator:2.4.2'
+	testImplementation 'junit:junit:4.13'
+}
+
+publishing {
+	publications {
+		library(MavenPublication) {
+			from components.java
+		}
+	}
+
+	repositories {
+		maven {
+			url System.getenv("ARTIFACTS_REPOSITORY_URL") != null ? System.getenv("ARTIFACTS_REPOSITORY_URL") : artifactsRepositoryUrl
+			name System.getenv("ARTIFACTS_FEED_NAME") != null ? System.getenv("ARTIFACTS_FEED_NAME") : artifactsFeedName
+			authentication {
+				basic(BasicAuthentication)
+			}
+		}
+	}
+}
