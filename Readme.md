@@ -65,19 +65,19 @@ variables:
 
 steps:
 - task: MavenAuthenticate@0
-    inputs:
-      artifactsFeeds: $(artifacts_feed_name)
+  inputs:
+    artifactsFeeds: $(artifacts_feed_name)
 - task: Gradle@2
-    inputs:
-      workingDirectory: ''
-      gradleWrapperFile: 'gradlew'
-      gradleOptions: '-Xmx3072m'
-      javaHomeOption: 'JDKVersion'
-      jdkVersionOption: '1.8'
-      jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
-      testResultsFiles: '**/TEST-*.xml'
-      tasks: 'test publish'
+  inputs:
+    workingDirectory: ''
+    gradleWrapperFile: 'gradlew'
+    gradleOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.8'
+    jdkArchitectureOption: 'x64'
+    publishJUnitResults: true
+    testResultsFiles: '**/TEST-*.xml'
+    tasks: 'test publish'
 ```
 8. "Save and run" をクリックすると YAML ファイルが保存され、パイプラインが実行されます。
 9. Artifacts を開き、`com.contoso.samples:echo` というパッケージが展開されていることを確認します。
