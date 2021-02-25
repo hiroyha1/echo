@@ -46,7 +46,7 @@
 
 Gradle プロジェクトをビルドし成果物を Azure Artifaces へ発行するパイプラインを作成します。
 
-1. Pipelines の Pipelines を開きます。
+1. Pipelines を開きます。
 2. "New pipeline" をクリックします。
 3. "Where is your code?" と表示される画面で "Azure Repos Git" を選択します。
 4. "Select a repository" と表示される画面で "echo" を選択します。
@@ -127,30 +127,26 @@ stages:
 
 ### 解説 - ラボで作成したパイプラインについて
 
-master ブランチへの変更をトリガーにパイプラインを実行します。
-
 ```yaml
 trigger:
 - master
 ```
 
-Ubuntu エージェントで各ステップを実行します。
+master ブランチへの変更をトリガーにパイプラインを実行します。
 
 ```yaml
 pool:
   vmImage: ubuntu-latest
 ```
 
-"Variable group の作成" で作成した feed-variable-group という名前の Variable group を参照します。
+Ubuntu エージェントで各ステップを実行します。
 
 ```yaml
 variables:
 - group: feed-variable-group
 ```
 
-Maven Authenticate というタスクを実行します。
-
-このタスクは変数 `ARTIFACTS_FEED_NAME` で指定された Azure Artifacts のフィードの認証情報を `~/.m2/settings.xml` ファイルに出力します。なお、@ の後ろの数字は、このタスクのバージョン (バージョン 0) を表します。
+"Variable group の作成" で作成した feed-variable-group という名前の Variable group を参照します。
 
 ```yaml
 steps:
@@ -159,9 +155,9 @@ steps:
     artifactsFeeds: $(ARTIFACTS_FEED_NAME)
 ```
 
-Gradle というタスクを実行します。
+[Maven Authenticate](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/package/maven-authenticate?view=azure-devops) というタスクを実行します。
 
-このタスクは tasks で指定した Gradle のタスクを実行します。ここでは test と publish の 2 つのタスクを実行しています。
+このタスクは変数 `ARTIFACTS_FEED_NAME` で指定された Azure Artifacts のフィードの認証情報を `~/.m2/settings.xml` ファイルに出力します。なお、@ の後ろの数字は、このタスクのバージョン (バージョン 0) を表します。
 
 ```yaml
 - task: Gradle@2
@@ -176,6 +172,10 @@ Gradle というタスクを実行します。
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'test publish'
 ```
+
+[Gradle](https://docs.microsoft.com/en-us/azure/devops/pipelines/tasks/build/gradle?view=azure-devops) というタスクを実行します。
+
+このタスクは tasks で指定した Gradle のタスクを実行します。ここでは test と publish の 2 つのタスクを実行しています。
 
 ## おまけ
 
